@@ -4,60 +4,23 @@
         PYTHON PARSER FOR NMEA FRAME
 """
 import re
-def form(frame):
+def verif(frame):
     """
         form is test on nmea frame
         return True if frame is an good NMEA frame. else False
     """
-    # Pront at begin of frame
-    pront="^\$"
     # Talker id
     talker="(BD|GB|GA|GP|GL)"
     # NMEA Frame Name 
-    
-    # control sum
-    control="*0E"
-    # NMEA end of frame \r\n
-    end=""#"\r\n"
-    virgule=""#"."
-    AAM="AAM"
-    ALM="ALM"
-    APA="APA"
-    APB="APB"
-    BOD="BOD"
-    BWC="BWC"
-    DTM="DTM"
-    GGA=pront+talker+"GGA"+virgule+end
-    GLL="GLL"
-    GRS="GRS"
-    GSA="GSA"
-    GST="GST"
-    GSV="GSV"
-    MSK="MSK"
-    MSS="MSS"
-    RMA="RMA"
-    RMB="RMB"
-    RMC="RMC"
-    RTE="RTE"
-    TRF="TRF"
-    STN="STN"
-    VBW="VBW"
-    VTG="VTG"
-    WCV="WCV"
-    WPL="WPL"
-    XTC="XTC"
-    XTE="XTE"
-    ZTG="ZTG"
-    ZDA="ZDA"
-    HCHDG="HCHDG"
-    PSLIB="PSLIB"
-    regex_nmea="("+GGA+")"
+    frame_name="(AAM|ALM|APA|APB|BOD|BWC|DTM|GGA|GLL|GRS|GSA|GST|GSV|MSK|MSS|RMA|RMB|RMC|RTE|TRF|STN|VBW|VTG|WCV|WPL|XTC|XTE|ZDA|HCHDG|PSLIB)"
+    regex_nmea="^\$"+talker+frame_name+",.*"+"(\*[0-F][0-F]\r\n)$"
     print regex_nmea
     if (re.search(regex_nmea, frame)==None):
         return False
     else:
         return True
     
-test=["$GPGGA","GPGGA","$GGA","","$","zerze$GPGGA"]
+test=["$GPGGA,064036.289,4836.5375,N,00740.9373,E,1,04,3.2,200.2,M,,,,0000*0E\r\n","$GPGGA,065218.,","$GPGGA,065218.235,","$GPGGA489494","$GGA","","$","zerze$GPGGA"]
+
 for i in test:
-    print i,":",form(i)
+    print i,":",verif(i)
